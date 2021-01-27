@@ -1,0 +1,43 @@
+{% extends "task_app/base.html" %}
+
+{% block title %} Engineer info {% endblock %}
+{% block content %}
+{% include "task_app/navigation.html" %}
+    <div class="container">
+        <!-- Engineer info -->
+        <div class="content-group">
+            <h3><strong>{{ engineer }}</strong></h3>
+            <p>Following: {{following}}</p>
+            <p>Followers: {{follower}}</p>
+            {% if engineer.owner == request.user %}
+            {% else %}
+                {% if is_followed %}
+                    <a href="{% url 'unfollow_user' engineer.owner %}" class="btn btn-warning">Unfollow</a>
+                {% else %}
+                    <a href="{% url 'follow_user' engineer.owner %}" class="btn btn-primary">Follow</a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <!-- Assigned tasks -->
+        <div class="grid-container">
+            {% for task in tasks %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{task.category}}</h5>
+                                <p class="card-text">Start date: {{task.start_date}}</p>
+                                {% if task.is_completed %}
+                                    <p class="card-text">Completed</p>
+                                {% else %}
+                                    <p class="card-text">Pending</p>
+                                {% endif %}
+                                <a href="{{task.get_absolute_url}}" class="btn btn-primary">Comments</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

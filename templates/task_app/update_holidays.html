@@ -1,0 +1,15 @@
+{% extends "task_app/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Update holidays {% endblock %}
+{% block content %}
+{% include "task_app/navigation.html" %}
+<div class="container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type="submit" value="Update" class="btn btn-primary">
+        <a href="{% url 'holidays' %}" class="btn btn-primary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

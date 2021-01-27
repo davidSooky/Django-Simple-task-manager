@@ -1,0 +1,71 @@
+{% extends "task_app/base.html" %}
+
+{% block title %} Task comments {% endblock %}
+{% block content %}
+{% include "task_app/navigation.html" %}
+<div class="container">
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Comment</button>
+    <a href="{% url 'export_pdf' %}" class="btn btn-secondary" style="float:right">Export PDF</a>
+    <a href="{% url 'user_info' task.assigned_to.owner %}" class="btn btn-secondary" style="float:right">Back</a>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" stlye="float: left">Add comment</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Form to create holidays-->
+                    <form action="" method="POST" style="display:flex; flex-direction:column; align-items:center">
+                        {% csrf_token %}
+                        <div style="margin: 15px 0">
+                        <p>{{form.content.label}}</p>
+                        {{form.content}}
+                        <input type="submit" value="Add" class="btn btn-primary" style="display:block">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="comment-header">
+        <h3>{{task}}</h3>
+        <p>Engineer: {{task.assigned_to}}</p>
+        <p>Start date: {{task.start_date}}</p>
+        {% if task.end_date %}
+            <p>End date: {{task.end_date}}</p>
+        {% endif %}
+    </div>
+    {% if not comments %}
+        <div class="comment-header">
+            <h3>No comments to show.</h3>
+        </div>
+    {% else %}
+        {% for comment in comments %}
+            <div class="content-group comment">
+                <h3><strong>{{comment.owner}}</strong></h3>
+                <p style="margin-top:10px">{{comment.content}}</p>
+                <p>{{comment.update_date}}</p>
+                {% if request.user == comment.owner %}
+                    <div class="manage-symbols">
+                        <a href="{% url 'update_comment' comment.id %}">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </a>
+                        <a href="{% url 'delete_comment' comment.id %}">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                            </svg>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

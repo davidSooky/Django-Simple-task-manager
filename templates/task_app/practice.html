@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice</title>
+    <script
+			  src="https://code.jquery.com/jquery-3.5.1.js"
+			  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+              crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <input type="search" name="search" id="searchfield" placeholder="Type here..." autocomplete="off">
+    <table id="myTable">
+        <thead>
+            <th>Country</th>
+            <th>City</th>
+        </thead>
+        <tbody id="TableBody">
+            <tr>
+                <td>Slovakia</td>
+                <td>Bratislava</td>
+            </tr>
+            <tr>
+                <td>Hungary</td>
+                <td>Budapest</td>
+            </tr>
+            <tr>
+                <td>Austria</td>
+                <td>Wien</td>
+            </tr>
+            <tr>
+                <td>Germany</td>
+                <td>Berlin</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+
+        var filter = document.getElementById("searchfield");
+        $("#searchfield").keyup(FilterData);
+
+        function FilterData(){
+            let SearchedData = filter.value.toLowerCase();
+            let myTable = document.getElementById("myTable");
+            let TableData = myTable.getElementsByTagName("tr");
+            let result;
+            let resultText;
+
+            for (let i = 0; i < TableData.length; i++){
+                result = TableData[i].getElementsByTagName("td")[0];
+                if(result){
+                    resultText = result.innerText || result.textContent;
+                    if (resultText.toLowerCase().indexOf(SearchedData) > -1){
+                        TableData[i].style.display = "";
+                        }
+                    else {
+                        TableData[i].style.display = "none";
+                    }
+                }
+            }
+        }   
+    </script>
+</body>
+</html>

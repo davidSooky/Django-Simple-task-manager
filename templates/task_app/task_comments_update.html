@@ -1,0 +1,16 @@
+{% extends "task_app/base.html" %}
+
+{% block title %} Update comment {% endblock %}
+{% block content %}
+{% include "task_app/navigation.html" %}
+    <div class="container">
+        <div style="margin: 0 auto">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div><strong>{{form.content.label}}</strong></div>
+            <div>{{form.content}}</div>
+            <input class="btn btn-primary" type="submit" value="Update comment">
+        </form>
+        </div>
+    </div>
+{% endblock %}

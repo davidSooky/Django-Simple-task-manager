@@ -1,0 +1,21 @@
+{% extends "task_app/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+        <input type="submit" value="Register" class="btn btn-primary">
+        {% if messages %}
+        <div class="btn btn-danger" style="display:block; margin-top: 10px; cursor: none">
+            {% for message in messages %}
+                {{message}}
+            {% endfor %}
+        </div>        
+        {% endif %} 
+    </form>
+    <p>Already have an account ? <a href="{% url 'login' %}">Login</a> here.</p>
+</div>
+{% endblock %}

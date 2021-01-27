@@ -1,0 +1,78 @@
+{% extends "task_app/base.html" %}
+
+{% block title %} Define holiday {% endblock %}
+{% block content %}
+{%include "task_app/navigation.html" %}
+<div class="container">
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Define holiday</button>
+  {% for error in form.non_field_errors %}
+  <div style="margin: 15px 0; background-color: red; padding: 15px">
+    {{error}}
+  </div>
+  {% endfor %}
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" stlye="float: left">Create new holiday</h4>
+        </div>
+        <div class="modal-body">
+          <!-- Form to create holidays-->
+          <form action="" method="POST" style="display:flex; flex-direction:column; align-items:center">
+            {% csrf_token %}
+            <div style="margin: 15px 0">
+            {{form.owner}}
+            </div>
+            <div style="margin: 15px 0">
+            {{form.start_date.label}}
+            {{form.start_date}}
+            </div>
+            <div style="margin: 15px 0">
+            {{form.end_date.label}}
+            {{form.end_date}}
+            </div>
+            <input type="submit" value="Save" class="btn btn-primary">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- Holidays table -->
+  <br>
+  <table class="table table-striped">
+        <thead>
+          <tr>
+            {% if request.user.is_staff %}
+                <th scope="col">Engineer</th>
+            {% endif %}
+            <th scope="col">Holidays</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+          <tbody>
+            {% for holiday in holidays %}
+                <tr>
+                    {% if request.user.is_staff %}
+                        <td>{{holiday.owner}}</td>
+                    {% endif %}
+                    <td><strong>{{holiday}}</strong></td>
+                    <td><a href="{% url 'update_holidays' holiday.id %}" class="btn btn-info"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                      </svg></a></td>
+                    <td><a href="{% url 'delete_holidays' holiday.id %}" class="btn btn-danger"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                      </svg></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
